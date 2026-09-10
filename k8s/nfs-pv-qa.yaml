@@ -1,0 +1,27 @@
+# nfs-pv-qa.yaml (PVC의 namespace만 변경)
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qa-model-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadOnlyMany
+  nfs:
+    server: 172.16.0.200
+    path: /nfsvol/url-qa-models
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qa-model-pvc
+  namespace: qa-backend
+spec:
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: qa-model-pv

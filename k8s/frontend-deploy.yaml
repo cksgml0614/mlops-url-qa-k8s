@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: qa-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: frontend
+        image: myregistry.com/qa-frontend:latest
+        ports:
+        - containerPort: 8501
+        envFrom:
+        - configMapRef:
+            name: qa-config

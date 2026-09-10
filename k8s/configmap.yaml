@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qa-config
+  namespace: url-qa
+data:
+  API_URL: "http://backend:8000/qa"
+  MODEL_PATH: "/app/models/koelectra-small-qa"
+  MAX_CONTEXT_LEN: "1500"

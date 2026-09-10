@@ -1,0 +1,6 @@
+transformers==4.46.3
+fastapi
+uvicorn[standard]
+requests
+beautifulsoup4
+pymysql

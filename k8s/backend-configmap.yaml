@@ -1,0 +1,11 @@
+# backend-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qa-config
+  namespace: qa-backend
+data:
+  MODEL_PATH: "/app/models/koelectra-small-qa"
+  MAX_CONTEXT_LEN: "1500"
+  DB_HOST: "db"
+  DB_PORT: "3306"

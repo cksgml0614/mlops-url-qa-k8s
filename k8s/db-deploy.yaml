@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db
+  namespace: qa-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db
+  template:
+    metadata:
+      labels:
+        app: db
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:8.0
+        ports:
+        - containerPort: 3306
+        envFrom:
+        - secretRef:
+            name: db-secret
+        volumeMounts:
+        - name: db-vol
+          mountPath: /var/lib/mysql
+        readinessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-uroot", "-p$(MYSQL_ROOT_PASSWORD)"]
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 10
+      volumes:
+      - name: db-vol
+        persistentVolumeClaim:
+          claimName: qa-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db
+  namespace: qa-backend
+spec:
+  selector:
+    app: db
+  ports:
+  - port: 3306
+    targetPort: 3306

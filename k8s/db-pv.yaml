@@ -1,0 +1,29 @@
+# db-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: qa-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  mountOptions:
+    - nfsvers=3
+  nfs:
+    server: 172.16.0.200
+    path: /nfsvol/qa-db-data
+  persistentVolumeReclaimPolicy: Retain
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: qa-db-pvc
+  namespace: qa-backend
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  volumeName: qa-db-pv

@@ -1,0 +1,8 @@
+# frontend-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: qa-config
+  namespace: qa-frontend
+data:
+  BACKEND_BASE_URL: "http://backend.qa-backend.svc.cluster.local:8000"
