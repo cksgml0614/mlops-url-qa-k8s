@@ -25,6 +25,8 @@ spec:
             name: qa-config
         - secretRef:
             name: db-secret
+        - secretRef:
+            name: mlflow-client-secret
         volumeMounts:
         - name: model-vol
           mountPath: /app/models

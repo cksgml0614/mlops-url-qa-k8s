@@ -6,4 +6,5 @@ metadata:
 data:
   DB_HOST: "mlflow-db"
   DB_PORT: "5432"
-  MLFLOW_SERVER_ALLOWED_HOSTS: "mlflow-server:*,mlflow-server.qa-backend.svc.cluster.local:*,localhost:*,192.168.*"
+  MLFLOW_SERVER_ALLOWED_HOSTS: "mlflow-server:*,mlflow-server.qa-backend.svc.cluster.local:*,localhost:*,192.168.*,172.16.0.200:*"
+  MLFLOW_SERVER_CORS_ALLOWED_ORIGINS: "http://172.16.0.200:5001,http://localhost:5001"

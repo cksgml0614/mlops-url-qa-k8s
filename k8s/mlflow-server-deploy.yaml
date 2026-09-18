@@ -25,12 +25,23 @@ spec:
             name: mlflow-server-config
         - secretRef:
             name: mlflow-db-secret
+        env:
+        - name: MLFLOW_FLASK_SERVER_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mlflow-auth-secret
+              key: flask-secret-key
+        - name: MLFLOW_AUTH_CONFIG_PATH
+          value: /etc/mlflow/auth_config.ini
+
         volumeMounts:
         - name: mlflow-artifact-vol
           mountPath: /mlartifacts
+        - name: auth-config-vol
+          mountPath: /etc/mlflow
+          readOnly: true
         readinessProbe:
-          httpGet:
-            path: /
+          tcpSocket:
             port: 5000
           initialDelaySeconds: 10
           periodSeconds: 5
@@ -38,3 +49,9 @@ spec:
       - name: mlflow-artifact-vol
         persistentVolumeClaim:
           claimName: mlflow-artifact-pvc
+      - name: auth-config-vol
+        secret:
+          secretName: mlflow-auth-secret
+          items:
+          - key: auth_config.ini
+            path: auth_config.ini

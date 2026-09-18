@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mlflow-register-helper
+  namespace: qa-backend
+spec:
+  imagePullSecrets:
+  - name: regcred
+  containers:
+  - name: helper
+    image: myregistry.com/qa-backend:latest
+    command: ["sleep", "3600"]
+    env:
+    - name: MLFLOW_TRACKING_URI
+      value: "http://mlflow-server:5000"
+    - name: MLFLOW_TRACKING_USERNAME
+      value: "admin"
+    - name: MLFLOW_TRACKING_PASSWORD
+      value: "qwerasdfzxcv"
+    volumeMounts:
+    - name: model-vol
+      mountPath: /app/models
+      readOnly: true
+  volumes:
+  - name: model-vol
+    persistentVolumeClaim:
+      claimName: qa-model-pvc

@@ -2,3 +2,5 @@ k8s/db-secret.yaml
 
 k8s/mlflow-db-secret.yaml
 volumes/
+k8s/mlflow-auth-secret.yaml
+k8s/mlflow-client-secret.yaml
