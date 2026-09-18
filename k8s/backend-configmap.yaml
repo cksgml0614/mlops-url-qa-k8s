@@ -9,3 +9,5 @@ data:
   MAX_CONTEXT_LEN: "1500"
   DB_HOST: "db"
   DB_PORT: "3306"
+  MLFLOW_TRACKING_URI: "http://mlflow-server:5000"
+  MLFLOW_MODEL_URI: "models:/koelectra-qa@champion"

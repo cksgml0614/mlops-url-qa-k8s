@@ -5,13 +5,15 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import requests
 from bs4 import BeautifulSoup
-from transformers import pipeline
+import mlflow
+import mlflow.transformers
 import pymysql
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-MODEL_PATH = os.environ.get("MODEL_PATH", "./models/koelectra-small-qa")
+MLFLOW_TRACKING_URI = os.environ.get("MLFLOW_TRACKING_URI", "http://mlflow-server:5000")
+MLFLOW_MODEL_URI = os.environ.get("MLFLOW_MODEL_URI", "models:/koelectra-qa@champion")
 MAX_CONTEXT_LEN = int(os.environ.get("MAX_CONTEXT_LEN", "1500"))
 EVIDENCE_WINDOW = int(os.environ.get("EVIDENCE_WINDOW", "60"))
 
@@ -53,15 +55,15 @@ def init_db():
 @app.on_event("startup")
 def load_model():
     global qa_pipeline
-    logger.info(f"모델 로딩 시작: {MODEL_PATH}")
-    qa_pipeline = pipeline("question-answering", model=MODEL_PATH, tokenizer=MODEL_PATH)
+    logger.info(f"MLflow에서 모델 로딩 시작: {MLFLOW_MODEL_URI}")
+    mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+    qa_pipeline = mlflow.transformers.load_model(MLFLOW_MODEL_URI)
     logger.info("모델 로딩 완료")
     try:
         init_db()
         logger.info("DB 초기화 완료")
     except Exception as e:
         logger.error(f"DB 초기화 실패: {e}")
-
 
 class QARequest(BaseModel):
     url: str

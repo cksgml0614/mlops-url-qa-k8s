@@ -1,0 +1,8 @@
+name: url-qa-eval
+python_env: python_env.yaml
+
+entry_points:
+  evaluate:
+    parameters:
+      model_uri: {type: str, default: "models:/koelectra-qa@champion"}
+    command: "python evaluate_model.py"

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-db
+  namespace: qa-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow-db
+  template:
+    metadata:
+      labels:
+        app: mlflow-db
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:15
+        ports:
+        - containerPort: 5432
+        envFrom:
+        - configMapRef:
+            name: mlflow-db-config
+        - secretRef:
+            name: mlflow-db-secret
+        volumeMounts:
+        - name: mlflow-db-vol
+          mountPath: /var/lib/postgresql/data
+        readinessProbe:
+          exec:
+            command: ["sh", "-c", "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"]
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 10
+      volumes:
+      - name: mlflow-db-vol
+        persistentVolumeClaim:
+          claimName: mlflow-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mlflow-db
+  namespace: qa-backend
+spec:
+  selector:
+    app: mlflow-db
+  ports:
+  - port: 5432
+    targetPort: 5432

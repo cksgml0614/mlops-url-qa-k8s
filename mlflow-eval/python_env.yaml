@@ -1,0 +1,11 @@
+python: "3.10.21"
+build_dependencies:
+  - pip
+  - setuptools
+  - wheel
+dependencies:
+  - mlflow
+  - transformers==4.46.3
+  - torch
+  - requests
+  - beautifulsoup4

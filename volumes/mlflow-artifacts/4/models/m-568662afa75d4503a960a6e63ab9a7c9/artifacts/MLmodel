@@ -1,0 +1,35 @@
+artifact_path: mlflow-artifacts:/4/models/m-568662afa75d4503a960a6e63ab9a7c9/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.transformers
+    python_version: 3.10.21
+  transformers:
+    code: null
+    components:
+    - tokenizer
+    framework: pt
+    instance_type: QuestionAnsweringPipeline
+    model_binary: model
+    pipeline_model_type: ElectraForQuestionAnswering
+    source_model_name: /app/models/koelectra-small-qa
+    task: question-answering
+    tokenizer_type: ElectraTokenizerFast
+    torch_dtype: torch.float32
+    transformers_version: 4.46.3
+is_signature_from_type_hint: false
+mlflow_version: 3.16.1
+model_id: m-568662afa75d4503a960a6e63ab9a7c9
+model_size_bytes: 57331265
+model_uuid: m-568662afa75d4503a960a6e63ab9a7c9
+prompts: null
+run_id: 82e3082fa61449cb8e0bad207ea0fc4a
+signature:
+  inputs: '[{"type": "string", "name": "question", "required": true}, {"type": "string",
+    "name": "context", "required": true}]'
+  outputs: '[{"type": "string", "required": true}]'
+  params: null
+type_hint_from_example: false
+utc_time_created: '2026-09-18 01:25:24.357529'

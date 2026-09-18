@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflow-server
+  namespace: qa-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mlflow-server
+  template:
+    metadata:
+      labels:
+        app: mlflow-server
+    spec:
+      imagePullSecrets:
+      - name: regcred
+      containers:
+      - name: mlflow-server
+        image: myregistry.com/mlflow-server:latest
+        ports:
+        - containerPort: 5000
+        envFrom:
+        - configMapRef:
+            name: mlflow-server-config
+        - secretRef:
+            name: mlflow-db-secret
+        volumeMounts:
+        - name: mlflow-artifact-vol
+          mountPath: /mlartifacts
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+      volumes:
+      - name: mlflow-artifact-vol
+        persistentVolumeClaim:
+          claimName: mlflow-artifact-pvc

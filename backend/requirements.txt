@@ -4,3 +4,4 @@ uvicorn[standard]
 requests
 beautifulsoup4
 pymysql
+mlflow

@@ -1,0 +1,2 @@
+A license file could not be found for the '/app/models/koelectra-small-qa' repository. 
+To ensure that you are in compliance with the license requirements for this model, please visit the model repository here: https://huggingface.co//app/models/koelectra-small-qa

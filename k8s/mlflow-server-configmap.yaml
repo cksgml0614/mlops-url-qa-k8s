@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mlflow-server-config
+  namespace: qa-backend
+data:
+  DB_HOST: "mlflow-db"
+  DB_PORT: "5432"
+  MLFLOW_SERVER_ALLOWED_HOSTS: "mlflow-server:*,mlflow-server.qa-backend.svc.cluster.local:*,localhost:*,192.168.*"
